@@ -9,6 +9,17 @@ public class Person {
 
     private int age;
 
+
+    private String homeAddress;
+
+    public String getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(String homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
     public String getName() {
         return name;
     }
