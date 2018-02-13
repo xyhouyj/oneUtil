@@ -124,4 +124,7 @@ public class Person {
     public void setAge(int age) {
         this.age = age;
     }
+    private void love(){
+        System.out.println("人民爱劳动。。。。。");
+    }
 }
