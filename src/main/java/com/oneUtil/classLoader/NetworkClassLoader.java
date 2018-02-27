@@ -10,9 +10,10 @@ import java.net.URLConnection;
  */
 public class NetworkClassLoader extends ClassLoader {
 
-    String host;
-    int port;
+    String name;
 
+    //类存放的路径
+    private String path = "D:\\installsofts\\git\\gitworkspace\\target\\classes\\com\\ehaoyao\\qimen\\models\\";
     @Override
     protected Class<?> findClass(String name) {
         byte[] b = new byte[0];
@@ -24,45 +25,39 @@ public class NetworkClassLoader extends ClassLoader {
         return defineClass(name,b,0,b.length);
     }
     private byte[] loadClassData(String name) throws IOException {
-        URL url = new URL("http://localhost:8081/qimen/orders");
-        URLConnection connection = url.openConnection();
-        HttpURLConnection httpURLConnection = (HttpURLConnection) connection;
-        httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-        InputStream inputStream = null;
-        InputStreamReader inputStreamReader = null;
-        byte[] b = new byte[1024];
-        int len = 0;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            inputStream = httpURLConnection.getInputStream();
-            inputStreamReader = new InputStreamReader(inputStream);
-            while((len = inputStream.read(b)) != -1){
-                baos.write(b,0,len);
+//            name = name.replace(".", "//");
+            FileInputStream is = new FileInputStream(new File(path + name + ".class"));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            int b = 0;
+            while ((b = is.read()) != -1) {
+                baos.write(b);
             }
-        }finally {
-           if (null != inputStream){
-               inputStream.close();
-           }
+            return baos.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        System.out.println(baos.size());
-        return baos.toByteArray();
+        return null;
     }
 
 
-    public String getHost() {
-        return host;
+    public String getName() {
+        return name;
     }
 
-    public int getPort() {
-        return port;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public String getPath() {
+        return path;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public NetworkClassLoader(String name) {
+        this.name = name;
     }
 }
